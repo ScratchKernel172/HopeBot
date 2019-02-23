@@ -2,9 +2,6 @@ import os
 import time
 import random
 
-# py_proxy
-#from proxy import Proxy
-
 # Import selenium modules
 from selenium import webdriver
 
