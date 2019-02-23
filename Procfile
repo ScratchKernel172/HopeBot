@@ -1,1 +1,1 @@
-\0xEF\0xBB\0xBFworker: vendor/bin/heroku-php-nginx -C nginx_app.conf public/
+\0xEF\0xBB\0xBFworker: python bot.py
