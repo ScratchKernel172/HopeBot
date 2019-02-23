@@ -1,2 +1,5 @@
+pip
 selenium
-py_proxy
+requests
+lxml
+beautifulsoup4
