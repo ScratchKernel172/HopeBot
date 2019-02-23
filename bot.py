@@ -100,9 +100,9 @@ print("[#] Using New Proxy: " + new_proxy)
 
 options = webdriver.ChromeOptions()
 options.binary_location = binary_path
-options.add_argument('headless')
+options.add_argument('--headless')
 options.add_argument('--proxy-server=' + new_proxy)
-options.add_argument("user-agent="+driver_UA)
+options.add_argument("--user-agent="+driver_UA)
 options.add_argument('--disable-gpu')
 options.add_argument('--no-sandbox')
 options.add_argument("--blink-settings=imagesEnabled=false")
@@ -149,4 +149,3 @@ while True:
     print("""[>>] Recurring [<<]""")
     time.sleep(10)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-pbrowser.close()
