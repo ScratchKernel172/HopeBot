@@ -1,1 +1,1 @@
-\0xEF\0xBB\0xBFworker: python bot.py
+worker:  python bot.py
