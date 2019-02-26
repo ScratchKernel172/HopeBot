@@ -38,7 +38,7 @@ driver_UA = """Mozilla/5.0 (Series40; Nokia200/11.56; Profile/MIDP-2.1 Configura
 
 def send_msg(msgtext):
     parms = {'chat_id': to_chat,'text': msgtext}
-    response = requests.post("https://api.telegram.org/bot"+ bot_token + '/' + 'sendMessage', data=parms)
+    response = requests.post("https://api.telegram.org/bot"+ bot_token + "/" + "sendMessage" , data=parms)
     return response
 
 
@@ -123,7 +123,7 @@ pbrowser = webdriver.Chrome(executable_path=driver_path,desired_capabilities=des
 pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
-send_msg("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
+send_msg("[#] Success... " )
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
@@ -197,6 +197,7 @@ while True:
         send_msg("""          SSH Command:          """)
         send_msg(shh_data)
         send_msg("""________________________________""")
-    send_msg("""[>>] Recurring VM Start [<<]""")
+
+    send_msg("""[>>] Recurring [<<]""")
     time.sleep(10)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
