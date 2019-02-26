@@ -55,6 +55,7 @@ send_msg("[#] Fetching Proxies...")
 
 
 
+
 def adress_proxy():
     target_url = 'https://www.ip-adress.com/proxy-list'
     result = requests.get(target_url)
@@ -123,7 +124,7 @@ pbrowser = webdriver.Chrome(executable_path=driver_path,desired_capabilities=des
 pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
-send_msg("[#] Success... " )
+send_msg("[#] Success... ")
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
@@ -147,57 +148,8 @@ while not("Terminal" in pbrowser.title):
     time.sleep(25)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 send_msg("[#] VM Started Successfully...")
-
-
-
-
-def check_is_login_page():
-    is_login = True
-    try:
-        email_field = pbrowser.find_element_by_id("emailInput")
-    except:
-        is_login = False
-    return is_login
-
-def relogin_goorm():
-    pbrowser.get("https://ide.goorm.io/my/")
-    send_msg("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
-    email_field = pbrowser.find_element_by_id("emailInput")
-    pass_field = pbrowser.find_element_by_id("passwordInput")
-    submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
-    send_msg("[#] Filling Up Login Form...")
-    WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
-    email_field.send_keys(goorm_email)
-    WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
-    pass_field.send_keys(goorm_pass)
-    time.sleep(10)
-    ssh_cmd = pbrowser.find_element_by_xpath("""/html/body/div[1]/section[3]/div/div[3]/div[2]/div[2]/div[5]/div[2]/div""")
-    return ssh_cmd.text()
-
-def get_ssh_info():
-    pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-    time.sleep(5)
-    pbrowser.get("https://ide.goorm.io/my/container/" + goorm_containername)
-    ssh_ip = pbrowser.find_element_by_css_selector(""".data-ip""")
-    ssh_ip = ssh_ip.text()
-    ssh_port = pbrowser.find_element_by_css_selector(""".data-external-port""")
-    ssh_port = ssh_port.text()
-    ssh_pass = pbrowser.find_element_by_xpath("""/html/body/div[1]/section[3]/div/div[4]/div[4]/div[1]/div[2]/div[5]/div/button""")
-
-
-
 send_msg("[#] Waiting for VM [#]")
 while True:
-    send_msg("""[>>] Checking VM... [<<]""")
-    if check_is_login_page()==True:
-        send_msg("""[>>] Commencing Re-Login... [<<]""")
-        shh_data = relogin_goorm()
-        send_msg("""--------------------------------""")
-        send_msg("""        New Data Found!!        """)
-        send_msg("""          SSH Command:          """)
-        send_msg(shh_data)
-        send_msg("""________________________________""")
-
     send_msg("""[>>] Recurring [<<]""")
     time.sleep(10)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
