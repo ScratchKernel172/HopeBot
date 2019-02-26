@@ -31,26 +31,19 @@ goorm_email = os.environ.get('G_EMAIL')
 goorm_pass = os.environ.get('G_PASS')
 goorm_containername = os.environ.get('G_WORK')
 
-bot_token = os.environ.get('BOT_TOKEN')
-to_chat = os.environ.get('BOT_CHAT_ID')
-
 driver_UA = """Mozilla/5.0 (Series40; Nokia200/11.56; Profile/MIDP-2.1 Configuration/CLDC-1.1) Gecko/20100401 S40OviBrowser/2.0.1.62.6"""
 
-def send_msg(msgtext):
-    parms = {'chat_id': to_chat,'text': str(msgtext)}
-    response = requests.post("https://api.telegram.org/bot"+ bot_token + "/" + "sendMessage" , data=parms)
-    return response
-
-
-send_msg(goorm_email + "\n" + goorm_pass + "\n" + goorm_containername)
 
 
 
 
 
-send_msg("[#] Starting...")
 
-send_msg("[#] Fetching Proxies...")
+
+
+print("[#] Starting...")
+
+print("[#] Fetching Proxies...")
 
 
 
@@ -99,7 +92,7 @@ for proxy in list:
 
 new_proxy = working_proxies[0]
 
-send_msg("[#] Using New Proxy: " + new_proxy)
+print("[#] Using New Proxy: " + new_proxy)
 
 
 options = webdriver.ChromeOptions()
@@ -118,22 +111,20 @@ desired_cap = options.to_capabilities()
 
 
 
-send_msg("[#] Loading Page...")
+print("[#] Loading Page...")
 pbrowser = webdriver.Chrome(executable_path=driver_path,desired_capabilities=desired_cap,service_log_path="chromedriver_logs.log")
 
 pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
-print("[#] Success... ")
-WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
-WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
+print("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
 print("[#] Filling Up Login Form...")
-
+WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
 email_field.send_keys(goorm_email)
-
+WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
 pass_field.send_keys(goorm_pass)
 print("[#] Logging In....")
 
@@ -142,16 +133,16 @@ submit_btn.click()
 
 
 
-send_msg("[#] Logged In Successfully...")
-send_msg("[#] Starting VM...")
+print("[#] Logged In Successfully...")
+print("[#] Starting VM...")
 
 pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 while not("Terminal" in pbrowser.title):
     time.sleep(25)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-send_msg("[#] VM Started Successfully...")
-send_msg("[#] Waiting for VM [#]")
+print("[#] VM Started Successfully...")
+print("[#] Waiting for VM [#]")
 while True:
-    send_msg("""[>>] Recurring [<<]""")
+    print("""[>>] Recurring [<<]""")
     time.sleep(10)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
