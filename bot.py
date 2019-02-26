@@ -37,7 +37,7 @@ to_chat = os.environ.get('BOT_CHAT_ID')
 driver_UA = """Mozilla/5.0 (Series40; Nokia200/11.56; Profile/MIDP-2.1 Configuration/CLDC-1.1) Gecko/20100401 S40OviBrowser/2.0.1.62.6"""
 
 def send_msg(msgtext):
-    parms = {'chat_id': to_chat,'text': msgtext}
+    parms = {'chat_id': to_chat,'text': str(msgtext)}
     response = requests.post("https://api.telegram.org/bot"+ bot_token + "/" + "sendMessage" , data=parms)
     return response
 
@@ -125,13 +125,15 @@ pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
 send_msg("[#] Success... ")
+WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
+WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
 send_msg("[#] Filling Up Login Form...")
-WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
+
 email_field.send_keys(goorm_email)
-WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
+
 pass_field.send_keys(goorm_pass)
 send_msg("[#] Logging In....")
 
