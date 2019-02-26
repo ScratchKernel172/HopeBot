@@ -31,8 +31,15 @@ goorm_email = os.environ.get('G_EMAIL')
 goorm_pass = os.environ.get('G_PASS')
 goorm_containername = os.environ.get('G_WORK')
 
+bot_token = os.environ.get('BOT_TOKEN')
+to_chat = os.environ.get('BOT_CHAT_ID')
+
 driver_UA = """Mozilla/5.0 (Series40; Nokia200/11.56; Profile/MIDP-2.1 Configuration/CLDC-1.1) Gecko/20100401 S40OviBrowser/2.0.1.62.6"""
 
+def send_msg(msgtext):
+    parms = {'chat_id': to_chat,'text': msgtext}
+    response = requests.post("https://api.telegram.org/bot"+ bot_token + '/' + 'sendMessage', data=parms)
+    return response
 
 
 
@@ -41,10 +48,9 @@ driver_UA = """Mozilla/5.0 (Series40; Nokia200/11.56; Profile/MIDP-2.1 Configura
 
 
 
-print("[#] Starting...")
+send_msg("[#] Starting...")
 
-print("[#] Fetching Proxies...")
-
+send_msg("[#] Fetching Proxies...")
 
 
 
@@ -92,7 +98,7 @@ for proxy in list:
 
 new_proxy = working_proxies[0]
 
-print("[#] Using New Proxy: " + new_proxy)
+send_msg("[#] Using New Proxy: " + new_proxy)
 
 
 options = webdriver.ChromeOptions()
@@ -111,38 +117,86 @@ desired_cap = options.to_capabilities()
 
 
 
-print("[#] Loading Page...")
+send_msg("[#] Loading Page...")
 pbrowser = webdriver.Chrome(executable_path=driver_path,desired_capabilities=desired_cap,service_log_path="chromedriver_logs.log")
 
 pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
-print("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
+send_msg("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
-print("[#] Filling Up Login Form...")
+send_msg("[#] Filling Up Login Form...")
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
 email_field.send_keys(goorm_email)
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
 pass_field.send_keys(goorm_pass)
-print("[#] Logging In....")
+send_msg("[#] Logging In....")
 
 WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "._2N5VJFocxBhsyYl-czZIZB")))
 submit_btn.click()
 
 
 
-print("[#] Logged In Successfully...")
-print("[#] Starting VM...")
+send_msg("[#] Logged In Successfully...")
+send_msg("[#] Starting VM...")
 
 pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 while not("Terminal" in pbrowser.title):
     time.sleep(25)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-print("[#] VM Started Successfully...")
-print("[#] Waiting for VM [#]")
+send_msg("[#] VM Started Successfully...")
+
+
+
+
+def check_is_login_page():
+    is_login = True
+    try:
+        email_field = pbrowser.find_element_by_id("emailInput")
+    except:
+        is_login = False
+    return is_login
+
+def relogin_goorm():
+    pbrowser.get("https://ide.goorm.io/my/")
+    send_msg("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
+    email_field = pbrowser.find_element_by_id("emailInput")
+    pass_field = pbrowser.find_element_by_id("passwordInput")
+    submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
+    send_msg("[#] Filling Up Login Form...")
+    WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "emailInput")))
+    email_field.send_keys(goorm_email)
+    WebDriverWait(pbrowser, 10).until(EC.element_to_be_clickable((By.ID, "passwordInput")))
+    pass_field.send_keys(goorm_pass)
+    time.sleep(10)
+    ssh_cmd = pbrowser.find_element_by_xpath("""/html/body/div[1]/section[3]/div/div[3]/div[2]/div[2]/div[5]/div[2]/div""")
+    return ssh_cmd.text()
+
+def get_ssh_info():
+    pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
+    time.sleep(5)
+    pbrowser.get("https://ide.goorm.io/my/container/" + goorm_containername)
+    ssh_ip = pbrowser.find_element_by_css_selector(""".data-ip""")
+    ssh_ip = ssh_ip.text()
+    ssh_port = pbrowser.find_element_by_css_selector(""".data-external-port""")
+    ssh_port = ssh_port.text()
+    ssh_pass = pbrowser.find_element_by_xpath("""/html/body/div[1]/section[3]/div/div[4]/div[4]/div[1]/div[2]/div[5]/div/button""")
+
+
+
+send_msg("[#] Waiting for VM [#]")
 while True:
-    print("""[>>] Recurring [<<]""")
+    send_msg("""[>>] Checking VM... [<<]""")
+    if check_is_login_page()==True:
+        send_msg("""[>>] Commencing Re-Login... [<<]""")
+        shh_data = relogin_goorm()
+        send_msg("""--------------------------------""")
+        send_msg("""        New Data Found!!        """)
+        send_msg("""          SSH Command:          """)
+        send_msg(shh_data)
+        send_msg("""________________________________""")
+    send_msg("""[>>] Recurring VM Start [<<]""")
     time.sleep(10)
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
