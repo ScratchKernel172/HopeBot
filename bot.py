@@ -121,6 +121,7 @@ pbrowser.maximize_window()
 
 pbrowser.get("https://ide.goorm.io/my/")
 print("[#] Success... "+"\n"+"[i] Page Title: "+ pbrowser.title )
+time.sleep(15)
 email_field = pbrowser.find_element_by_id("emailInput")
 pass_field = pbrowser.find_element_by_id("passwordInput")
 submit_btn = pbrowser.find_element_by_css_selector("""._2N5VJFocxBhsyYl-czZIZB""")
