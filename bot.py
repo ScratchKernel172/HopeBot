@@ -142,7 +142,7 @@ print("[#] Starting VM...")
 pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 while not("terminal" in pbrowser.title.lower()):
     pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-    time.sleep(30)
+    time.sleep(70)
     print("terminal found? : " + pbrowser.title)
 time.sleep(20)
 print("[#] VM Started Successfully...")
