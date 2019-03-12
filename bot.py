@@ -139,7 +139,7 @@ submit_btn.click()
 
 print("[#] Logged In Successfully...")
 print("[#] Starting VM...")
-pbrowser.get("https://ide-run.goorm.io/workspace/" + goorm_containername)
+pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 time.sleep(20)
 print("[#] VM Started Successfully...")
 print("[#] Waiting for VM [#]")
