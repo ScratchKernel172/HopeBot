@@ -139,15 +139,12 @@ submit_btn.click()
 
 print("[#] Logged In Successfully...")
 print("[#] Starting VM...")
-
-pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
-while not("Terminal" in pbrowser.title):
-    time.sleep(25)
-    pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
+pbrowser.get("https://ide-run.goorm.io/workspace/" + goorm_containername)
+time.sleep(20)
 print("[#] VM Started Successfully...")
 print("[#] Waiting for VM [#]")
 while True:
     print("""[>>] Recurring [<<]""")
-    time.sleep(10)
-    pbrowser.get("https://ide-run.goorm.io/workspace/" + goorm_containername)
+    time.sleep(8)
+    pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
 pbrowser.close()
