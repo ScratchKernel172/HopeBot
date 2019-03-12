@@ -149,5 +149,5 @@ print("[#] Waiting for VM [#]")
 while True:
     print("""[>>] Recurring [<<]""")
     time.sleep(10)
-    pbrowser.get("https://ide-run.goorm.io/terminal/" + goorm_containername)
+    pbrowser.get("https://ide-run.goorm.io/workspace/" + goorm_containername)
 pbrowser.close()
